@@ -25,8 +25,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const supabase = createClient()
 
   const fetchProfile = async (userId: string) => {
-    const { data } = await supabase.from('profiles').select('*').eq('id', userId).single()
-    if (data) setProfile(data)
+    try {
+      const { data } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle()
+      if (data) setProfile(data)
+    } catch {
+    }
   }
 
   const refreshProfile = async () => {
@@ -34,16 +37,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_, session) => {
+    let mounted = true
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!mounted) return
       setUser(session?.user ?? null)
       if (session?.user) {
-        await fetchProfile(session.user.id)
+        fetchProfile(session.user.id).finally(() => { if (mounted) setLoading(false) })
+      } else {
+        setLoading(false)
+      }
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return
+      setUser(session?.user ?? null)
+      if (session?.user) {
+        setTimeout(() => { if (mounted) fetchProfile(session.user!.id) }, 0)
       } else {
         setProfile(null)
       }
       setLoading(false)
     })
-    return () => subscription.unsubscribe()
+
+    return () => { mounted = false; subscription.unsubscribe() }
   }, [])
 
   const signOut = async () => {
