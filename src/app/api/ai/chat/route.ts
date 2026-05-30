@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     const isMax = plan === 'max'
     const perMinuteLimit = isMax ? 40 : 20
-    const rl = rateLimit(ai:${user.id}, perMinuteLimit, 60000)
+    const rl = rateLimit('ai:' + user.id, perMinuteLimit, 60000)
     if (!rl.ok) return NextResponse.json({ error: 'محاولات كثيرة، حاول بعد قليل' }, { status: 429 })
 
     const apiKey = process.env.GROQ_API_KEY
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: Bearer ${apiKey} },
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [system, ...messages],
