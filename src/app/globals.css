@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #3b5bdb;
+  --primary-dark: #2340b0;
+  --gold: #f5c842;
+  --dark-900: #080c1a;
+  --dark-800: #0f1629;
+  --dark-700: #161e38;
+  --dark-600: #1e2845;
+  --glass: rgba(255,255,255,0.045);
+  --glass-border: rgba(255,255,255,0.09);
+  --ring: rgba(59,91,219,0.55);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark-900);
+  color: #eef2ff;
+  font-family: 'Cairo', 'Tajawal', 'Noto Kufi Arabic', sans-serif;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* طبقة حبيبية خفيفة لإضافة عمق وملمس راقٍ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* العناوين بخط عرض مميز وأوزان أثقل */
+h1, h2, h3 {
+  font-family: 'Tajawal', 'Cairo', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* تحديد النص */
+::selection { background: rgba(59,91,219,0.35); color: #fff; }
+
+/* شريط التمرير */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--dark-800); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--primary), var(--primary-dark));
+  border-radius: 8px;
+  border: 2px solid var(--dark-800);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* حلقة تركيز موحّدة للوصولية */
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Glass card — زجاجي مع لمعة داخلية خفيفة وحدّة أنيقة */
+.glass-card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 30px rgba(0,0,0,0.25);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(120deg, #6f8bff 0%, #3b5bdb 45%, #f5c842 110%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* الأزرار — ظلال أكثر رقياً وأقل وهجاً صارخاً */
+.btn-primary {
+  @apply text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200;
+  background: linear-gradient(135deg, #4763e3, #2f4ac9);
+  box-shadow: 0 6px 18px -4px rgba(59,91,219,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-primary:hover {
+  box-shadow: 0 10px 28px -6px rgba(59,91,219,0.65), inset 0 1px 0 rgba(255,255,255,0.2);
+  transform: translateY(-1px);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-gold {
+  @apply text-dark-900 font-bold px-6 py-3 rounded-xl transition-all duration-200;
+  background: linear-gradient(135deg, #ffd95e, #e8b520);
+  box-shadow: 0 6px 18px -4px rgba(245,200,66,0.5), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.btn-gold:hover {
+  box-shadow: 0 10px 28px -6px rgba(245,200,66,0.65);
+  transform: translateY(-1px);
+}
+
+/* Plan badges */
+.badge-free { @apply bg-gray-600/80 text-gray-100 text-xs px-2.5 py-0.5 rounded-full; }
+.badge-pro {
+  @apply text-white text-xs px-2.5 py-0.5 rounded-full;
+  background: linear-gradient(135deg, #4763e3, #2f4ac9);
+}
+.badge-max {
+  @apply text-dark-900 text-xs px-2.5 py-0.5 rounded-full font-bold;
+  background: linear-gradient(135deg, #ffd95e, #e8b520);
+}
+
+/* خلفية ميش أكثر عمقاً وأناقة */
+.mesh-bg {
+  background:
+    radial-gradient(at 78% 8%, rgba(245,200,66,0.10) 0px, transparent 45%),
+    radial-gradient(at 18% 22%, rgba(59,91,219,0.18) 0px, transparent 50%),
+    radial-gradient(at 60% 95%, rgba(59,91,219,0.10) 0px, transparent 50%),
+    radial-gradient(at 0% 60%, rgba(111,139,255,0.08) 0px, transparent 45%);
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float { animation: float 3s ease-in-out infinite; }
+
+/* RTL fixes */
+[dir="rtl"] .space-x-4 > * + * { margin-right: 1rem; margin-left: 0; }
+
+/* Video container ratio */
+.video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+/* Prevent screenshot on video */
+.video-wrapper { -webkit-user-select: none; user-select: none; pointer-events: none; }
+.video-wrapper iframe { pointer-events: auto; }

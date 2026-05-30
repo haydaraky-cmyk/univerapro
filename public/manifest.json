@@ -1,0 +1,18 @@
+{
+  "name": "يونيفيرا - منصة التعلم",
+  "short_name": "UniVera",
+  "description": "كورسات جامعية، فرص عمل، وتدريب",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080c1a",
+  "theme_color": "#3b5bdb",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable any" }
+  ],
+  "categories": ["education"],
+  "screenshots": []
+}
