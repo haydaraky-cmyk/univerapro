@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
 
     const isMax = plan === 'max'
     const perMinuteLimit = isMax ? 40 : 20
-    const rl = rateLimit(ai:${user.id}, perMinuteLimit, 60_000)
-    if (!rl.ok) return NextResponse.json({ error: محاولات كثيرة، انتظر ${rl.retryAfter} ثانية }, { status: 429 })
+    const rl = rateLimit(ai:${user.id}, perMinuteLimit, 60000)
+    if (!rl.ok) return NextResponse.json({ error: 'محاولات كثيرة، حاول بعد قليل' }, { status: 429 })
 
     const apiKey = process.env.GROQ_API_KEY
     if (!apiKey) return NextResponse.json({ error: 'المساعد غير مهيّأ بعد' }, { status: 503 })
@@ -39,12 +39,9 @@ export async function POST(request: NextRequest) {
     const historyLen = isMax ? 20 : 10
     const messages = Array.isArray(body.messages) ? body.messages.slice(-historyLen) : []
 
-    const basePrompt =
-      'أنت مساعد تعليمي ودود على منصة "يونيفيرا" للتعلم الجامعي. أجب بالعربية بأسلوب واضح ومرتّب. ساعد الطلاب في فهم الدروس وشرح المفاهيم وحل التمارين.'
-    const maxExtra =
-      ' بما أن المستخدم مشترك في خطة "ماكس"، قدّم شروحاً أعمق وأمثلة عملية، وخطط دراسة مفصّلة، وخطوات حل مرتبة عند الحاجة.'
-    const closing =
-      ' إذا كان السؤال خارج نطاق التعليم أو يتعلّق بمشكلة فنية في الموقع، اعتذر بلطف ووجّه الطالب لفتح تذكرة دعم.'
+    const basePrompt = 'أنت مساعد تعليمي ودود على منصة يونيفيرا للتعلم الجامعي. أجب بالعربية بأسلوب واضح ومرتب. ساعد الطلاب في فهم الدروس وشرح المفاهيم وحل التمارين.'
+    const maxExtra = ' بما أن المستخدم مشترك في خطة ماكس، قدم شروحا أعمق وأمثلة عملية وخطط دراسة مفصلة وخطوات حل مرتبة.'
+    const closing = ' إذا كان السؤال خارج نطاق التعليم أو يتعلق بمشكلة فنية في الموقع، اعتذر بلطف ووجه الطالب لفتح تذكرة دعم.'
 
     const system = {
       role: 'system',
